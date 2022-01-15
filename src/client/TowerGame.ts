@@ -16,6 +16,7 @@ export default class TowerGame {
         this.scene = scene
         this.createBrick()
         document.addEventListener('keypress', (key) => this.keypress(key))
+        document.addEventListener('click', () => this.go())
     }
 
     public currentBrick(): Brick{
@@ -35,17 +36,20 @@ export default class TowerGame {
     }
 
     private keypress(key: KeyboardEvent) {
-        const now = new Date();
-        if (key.code === 'Space' && !key.repeat) {
-            this.tween.stop()
-            if(this.isValidBrickPosition()){
-                this.createBrick()
-            } else {
-                this.bricks.forEach(brick => {
-                    this.scene.remove(brick.mesh)
-                })
-                this.bricks = [];
-            }
+        if ((key.code === 'Space') && !key.repeat) {
+            this.go()
+        }
+    }
+
+    private go() {
+        this.tween.stop()
+        if (this.isValidBrickPosition()) {
+            this.createBrick()
+        } else {
+            this.bricks.forEach(brick => {
+                this.scene.remove(brick.mesh)
+            })
+            this.bricks = []
         }
     }
 
